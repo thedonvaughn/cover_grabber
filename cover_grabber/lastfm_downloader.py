@@ -1,0 +1,54 @@
+# Copyright (C) 2011 Jayson Vaughn (vaughn.jayson@gmail.com)
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 3, or (at your option)
+# any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+
+import urllib
+try:
+    import xml.etree.cElementTree as ETree
+except:
+    import xml.etree.ElementTree as ETree
+
+
+class LastFMDownloader(object):
+    def __init__(self, album_name, artist_name):
+        """ Initializes LastFM Downloader """
+
+        self.LASTFM_API_KEY = "a42ead6d2dcc2938bec2cda08a03b519" # Please use your OWN LastFM API key
+        self.LASTFM_URL = "http://ws.audioscrobbler.com/2.0/?method=album.search&album={album_name}&api_key=" + self.LASTFM_API_KEY
+        self.album_name = album_name
+        self.artist_name = artist_name
+        self.url = self.format_url()
+
+    def format_url(self):
+        """ Sanitize and format URL for Last FM search """
+        return self.LASTFM_URL.format(album_name=self.album_name)
+
+
+    def search_for_image(self):
+        """ Use LastFM's API to obtain a URL for the album cover art """
+        print("LastFM: Searching for {0} - {1}".format(self.artist_name, self.album_name))
+        
+        response = urllib.urlopen(self.url).read() # Send HTTP request to LastFM
+        xml_data = ETree.fromstring(response) # Read in XML data
+
+        for element in xml_data.getiterator("album"):
+            if (element.find('artist').text == self.artist_name):
+                for sub_element in element.findall('image'):
+                    if (sub_element.attrib['size'] == 'extralarge'):
+                        url = sub_element.text
+                        if url:
+                            return url
+                        else:
+                            return None
