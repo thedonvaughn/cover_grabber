@@ -2,7 +2,8 @@ Cover Grabber
 =============
 
 
-Simple Utility to recurisvely traverse directory of MP3s and download album cover art
+Simple utility to recurisvely traverse directory of media files (MP3, OGG, FLAC) and download album cover art.
+Very helpful if you have hundreds of thoursands of sub-directories of media files.
 
 ---------------
 

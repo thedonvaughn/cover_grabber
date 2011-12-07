@@ -16,6 +16,8 @@
 import os
 import urllib
 from mp3_handler import MP3Handler
+from ogg_handler import OGGHandler
+from flac_handler import FLACHandler
 from lastfm_downloader import LastFMDownloader
 
 
@@ -43,9 +45,11 @@ class MediaDirWalker(object):
         # If we have files in the directory
         if filenames:
             for file in filenames:
-                if "mp3" in file:
+                if ".mp3" in file:
                     filehandler = MP3Handler(dirname, filenames) # Set the File Handler to be MP3
                     break
+                if ".ogg" in file:
+                    filehandler = OGGHandler(dirname, filenames) # Set the File Handler to be OGG
                     
             # If we have a file handler, then continue
             if filehandler:
