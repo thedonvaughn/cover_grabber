@@ -7,6 +7,10 @@ Very helpful if you have hundreds of thoursands of sub-directories of media file
 
 ---------------
 
+## Requirements
+* Python
+* Mutagen python module
+
 ## Install
 
     $ python setup.py install
