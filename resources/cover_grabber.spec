@@ -34,7 +34,7 @@ python setup.py install --root=$RPM_BUILD_ROOT
 rm -rf $RPM_BUILD_ROOT
 
 %files
-%defattr(-,root,root-)
+%defattr(-,root,root,-)
 %doc README.md README COPYING ChangeLog
 %{_bindir}/covergrabber
 %{python_sitelib}/cover_grabber/
