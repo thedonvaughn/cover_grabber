@@ -19,7 +19,7 @@
 from distutils.core import setup
 
 setup(name='cover_grabber',
-      version='0.0.2',
+      version='1.0.0',
       description='Recursively traverse media directory and download album art',
       author='Jayson Vaughn',
       author_email='vaughn.jayson@gmail.com',
