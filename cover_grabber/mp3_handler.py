@@ -38,7 +38,7 @@ class MP3Handler(object):
                 if tags:
                     if "album" in tags.keys() and "artist" in tags.keys():
                         return (tags["album"][0], tags["artist"][0])
-                        break
+                        break # If we found ID3 tag info from a file, no reason to query the rest in a directory.  
             except mutagen.id3.ID3NoHeaderError:
                 continue
         return (None, None)
