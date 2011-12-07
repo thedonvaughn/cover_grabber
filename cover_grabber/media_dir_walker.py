@@ -25,13 +25,12 @@ class MediaDirWalker(object):
         """ Initialize Media directory walker object"""
 
         self.path = path #Media Path that will be recurisvely traverse
-        self.downloader = None #Which Downloader object to use? (LastFM)
-        self.filehandler = None #Which File Handler to use? (MP3)
         self.overwrite = overwrite
 
     def do_walk_path(self):
         """ Walk specified directory recursively.  Call self.process_dir() on each directory """
 
+        print("Scanning: {path}".format(path=self.path))
         os.path.walk(self.path, self.process_dir, None)
 
     def process_dir(self, args, dirname, filenames):
@@ -40,49 +39,58 @@ class MediaDirWalker(object):
         
         album_name = ""
         artist_name = ""
+        filehandler = None
 
         # If we have files in the directory
         if filenames:
             for file in filenames:
                 if "mp3" in file:
-                    self.filehandler = MP3Handler(dirname, filenames) # Set the File Handler to be MP3
+                    filehandler = MP3Handler(dirname, filenames) # Set the File Handler to be MP3
                     break
                     
             # If we have a file handler, then continue
-            if self.filehandler:
+            if filehandler:
                 # If the directory actually contains MP3s (or whatever media file extension) then continue
-                if self.filehandler.audio_files:
-                    (album_name, artist_name) = self.filehandler.get_album_and_artist() # Lookup album and artist ID3 tag
+                if filehandler.audio_files:
+                    (album_name, artist_name) = filehandler.get_album_and_artist() # Lookup album and artist ID3 tag
 
                     # If ID3 tag exists and we have an album name
                     if album_name:
-                        self.downloader = LastFMDownloader(album_name, artist_name) # Set downloader type to be LastFM
-                        image_url = self.downloader.search_for_image() # Search for cover image, return URL to download it
+                        downloader = LastFMDownloader(album_name, artist_name) # Set downloader type to be LastFM
+                        image_url = downloader.search_for_image() # Search for cover image, return URL to download it
                         # If we found the image URL, then download the image.
                         if image_url:
+                            print('Downloading album cover image for "{artist_name} - {album_name}"'.format(artist_name=artist_name, album_name=album_name))
                             self.download_image(dirname, image_url)
 
 
     def download_image(self, dirname, image_url):
-        """ Check if overwrite is enabled.  Check if cover.png already exists
+        """ Check if overwrite is enabled.  Check if album cover already exists
         Call method to download album cover art image to specified directory"""
 
-        # Does cover.png already exist?  
-        if os.path.exists(os.path.join(dirname, "cover.png")):
-            # If overwrite is set to True, then go ahead and re-download cover.png
+        # Set name of image file based on extension from image URL
+        if ".png" in image_url:
+            cover_name = "cover.png"
+        if ".jpg" in image_url:
+            cover_name = "cover.jpg"
+        if ".gif" in image_url:
+            cover_name = "cover.gif"
+
+        # Does cover.(png|jpg) already exist?  
+        if os.path.exists(os.path.join(dirname, cover_name)):
+            # If overwrite is set to True, then go ahead and re-download album cover
             if self.overwrite:
-                self.do_download(dirname, image_url)
+                self.do_download(dirname, image_url, cover_name)
             else:
                 print("!! Cover already exists in {0}".format(dirname))
         else:
-            # If cover.png doesn't exist, go ahead and download
-            self.do_download(dirname, image_url)
+            # If cover doesn't exist, go ahead and download
+            self.do_download(dirname, image_url, cover_name)
 
-    def do_download(self, dirname, image_url):
-        """ Download album cover art and save as cover.png"""
+    def do_download(self, dirname, image_url, cover_name):
+        """ Download album cover art and save as cover.(png|jpg)"""
 
-        print("Downloading album to {0}".format(dirname))
         image_data = urllib.urlopen(image_url).read()
-        f = open(os.path.join(dirname, "cover.png"), 'w')
+        f = open(os.path.join(dirname, cover_name), 'w')
         f.write(image_data)
         f.close()

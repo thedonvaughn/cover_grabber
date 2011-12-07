@@ -38,13 +38,13 @@ class LastFMDownloader(object):
 
     def search_for_image(self):
         """ Use LastFM's API to obtain a URL for the album cover art """
-        print("LastFM: Searching for {0} - {1}".format(self.artist_name, self.album_name))
         
+        print('LastFM: Searching for "{artist_name} - {album_name}"'.format(artist_name=self.artist_name, album_name=self.album_name))
         response = urllib.urlopen(self.url).read() # Send HTTP request to LastFM
         xml_data = ETree.fromstring(response) # Read in XML data
 
         for element in xml_data.getiterator("album"):
-            if (element.find('artist').text == self.artist_name):
+            if (element.find('artist').text.lower() == self.artist_name.lower()):
                 for sub_element in element.findall('image'):
                     if (sub_element.attrib['size'] == 'extralarge'):
                         url = sub_element.text
