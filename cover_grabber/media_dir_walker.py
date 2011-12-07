@@ -48,9 +48,15 @@ class MediaDirWalker(object):
                 if ".mp3" in file:
                     filehandler = MP3Handler(dirname, filenames) # Set the File Handler to be MP3
                     break
+
                 if ".ogg" in file:
                     filehandler = OGGHandler(dirname, filenames) # Set the File Handler to be OGG
+                    break
                     
+                if ".flac" in file:
+                    filehandler = FLACHandler(dirname, filenames) # Set the File Handler to be OGG
+                    break
+
             # If we have a file handler, then continue
             if filehandler:
                 # If the directory actually contains MP3s (or whatever media file extension) then continue
