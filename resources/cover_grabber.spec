@@ -4,7 +4,7 @@ Summary: Download album cover art
 Name: cover_grabber
 Version: 1.0.0
 Release: 1%{?dist}
-Source0: http://69.164.204.114/cover_grabber-0.0.2.tar.gz
+Source0: http://69.164.204.114/cover_grabber-1.0.0.tar.gz
 License: GPLv3+
 Group: Applications/Multimedia
 BuildRoot: %{_tmppath}/cover_grabber-1.0.0-1-buildroot
