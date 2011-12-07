@@ -1,19 +1,14 @@
-%define name cover_grabber
-%define version 0.0.2
-%define unmangled_version 0.0.2
-%define release 1
+%{!?python_sitelib: %global python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Summary: Download album cover art
-Name: %{name}
-Version: %{version}
-Release: %{release}%{?dist}
-Source0: http://69.164.204.114/%{name}-%{unmangled_version}.tar.gz
+Name: cover_grabber
+Version: 0.0.2
+Release: 1%{?dist}
+Source0: http://69.164.204.114/cover_grabber-0.0.2.tar.gz
 License: GPLv3+
 Group: Applications/Multimedia
-BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
-Prefix: %{_prefix}
+BuildRoot: %{_tmppath}/cover_grabber-0.0.2-1-buildroot
 BuildArch: noarch
-Vendor: Jayson Vaughn <vaughn.jayson@gmail.com>
 URL: http://github.com/thedonvaughn/cover_grabber
 
 Requires: python-mutagen
@@ -26,20 +21,23 @@ For instance:
 $ covergrabber "/home/user/Music"
 
 %prep
-%setup -q %{name}-%{unmangled_version}
+%setup -q cover_grabber-0.0.2
 
 %build
 python setup.py build
 
 %install
-python setup.py install --root=$RPM_BUILD_ROOT --record=INSTALLED_FILES
+python setup.py install --root=$RPM_BUILD_ROOT
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%files -f INSTALLED_FILES
-%defattr(-,root,root)
+%files
+%defattr(-,root,root-)
 %doc README.md README COPYING ChangeLog
+%{_bindir}/covergrabber
+%{python_sitelib}/cover_grabber/
+%{python_sitelib}/cover_grabber-%{version}-py*.egg-info
 
 %changelog
 * Wed Dec 7 2011 Jayson Vaughn <vaughn.jayson at, gmail.com> 0.0.2-1
