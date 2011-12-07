@@ -19,6 +19,10 @@ For example:
 
     $ covergrabber "/home/jvaughn/Music"
 
+## For Help
+
+    $ covergrabber -h
+
 ------
 
 (c) 2011 - Jayson Vaughn (vaughn.jayson@gmail.com)
