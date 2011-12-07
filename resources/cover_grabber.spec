@@ -11,7 +11,7 @@ BuildRoot: %{_tmppath}/cover_grabber-0.0.2-1-buildroot
 BuildArch: noarch
 URL: http://github.com/thedonvaughn/cover_grabber
 
-Requires: python
+BuildRequires: python-devel
 Requires: python-mutagen
 
 %description
