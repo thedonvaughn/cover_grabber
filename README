@@ -11,6 +11,9 @@ Very helpful if you have hundreds of thoursands of sub-directories of media file
 * Python
 * Mutagen python module
 
+* Debian/Ubuntu: apt-get install python-mutagen
+* Fedora: yum install python-mutagen
+
 ## Install
 
     $ python setup.py install
