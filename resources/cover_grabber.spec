@@ -2,14 +2,14 @@
 
 Summary:    Download album cover art
 Name:       cover_grabber
-Version:    1.0.0
+Version:    1.0.1
 Release:    1%{?dist}
-Source0:    http://69.164.204.114/cover_grabber-1.0.0.tar.gz
+Source0:    http://69.164.204.114/cover_grabber-1.0.1.tar.gz
 License:    GPLv3+
 Group:      Applications/Multimedia
 BuildRoot:  %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 BuildArch:  noarch
-URL:        http://github.com/thedonvaughn/cover_grabber
+URL:        https://sourceforge.net/projects/covergrabber/
 
 BuildRequires: python-devel
 Requires: python-mutagen
@@ -44,6 +44,8 @@ rm -rf $RPM_BUILD_ROOT
 %{python_sitelib}/cover_grabber-%{version}-py*.egg-info
 
 %changelog
+* Wed Dec 8 2011 Jayson Vaughn <vaughn.jayson@gmail.com> 1.0.1-1
+- Updated installation instructions
 * Wed Dec 7 2011 Jayson Vaughn <vaughn.jayson@gmail.com> 1.0.0-1
 - Added FLAC Support
 - Added OGG Support
