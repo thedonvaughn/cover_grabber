@@ -7,6 +7,10 @@ Very helpful if you have hundreds of thoursands of sub-directories of media file
 
 ---------------
 
+## Home Page
+
+https://sourceforge.net/projects/covergrabber/
+
 ## Requirements
 * Python
 * Mutagen python module
