@@ -71,8 +71,13 @@ class MediaDirWalker(object):
                             if os.path.exists(os.path.join(dirname, cover_name)):
                                 print(u'cover image for "{artist_name} - {album_name}" already present, move to next one'.format(artist_name=artist_name, album_name=album_name))
                                 return
-                        downloader = LastFMDownloader(album_name, artist_name) # Set downloader type to be LastFM
-                        image_url = downloader.search_for_image() # Search for cover image, return URL to download it
+                        try:
+                            downloader = LastFMDownloader(album_name, artist_name) # Set downloader type to be LastFM
+                            image_url = downloader.search_for_image() # Search for cover image, return URL to download it
+                        except KeyboardInterrupt,e:
+                            raise
+                        except Exception,e:
+                            print(u'SOMETHING VERY BAD HAPPENED during processing of "{artist_name} - {album_name}"'.format(artist_name=artist_name, album_name=album_name))
                         # If we found the image URL, then download the image.
                         if image_url:
                             print(u'Downloading album cover image for "{artist_name} - {album_name}"'.format(artist_name=artist_name, album_name=album_name))
