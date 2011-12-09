@@ -11,6 +11,10 @@ Very helpful if you have hundreds of thoursands of sub-directories of media file
 
 https://sourceforge.net/projects/covergrabber/
 
+## Source Code
+
+https://github.com/thedonvaughn/cover_grabber
+
 ## Requirements
 * Python
 * Mutagen python module
