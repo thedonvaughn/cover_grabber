@@ -96,6 +96,8 @@ class MediaDirWalker(object):
             cover_name = "cover.jpg"
         if ".gif" in image_url:
             cover_name = "cover.gif"
+        else:
+            return
 
         # Does cover.(png|jpg) already exist?  
         if os.path.exists(os.path.join(dirname, cover_name)):
