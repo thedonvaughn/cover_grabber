@@ -19,7 +19,7 @@
 from setuptools import setup
 
 setup(name='cover_grabber',
-      version='1.0.1',
+      version='1.1.0',
       description='Recursively traverse media directory and download album art',
       author='Jayson Vaughn',
       author_email='vaughn.jayson@gmail.com',

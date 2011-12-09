@@ -2,9 +2,9 @@
 
 Summary:    Download album cover art
 Name:       cover_grabber
-Version:    1.0.1
+Version:    1.1.0
 Release:    1%{?dist}
-Source0:    http://69.164.204.114/cover_grabber-1.0.1.tar.gz
+Source0:    http://69.164.204.114/cover_grabber-1.1.0.tar.gz
 License:    GPLv3+
 Group:      Applications/Multimedia
 BuildRoot:  %{_tmppath}/%{name}-%{version}-%{release}-buildroot
@@ -44,7 +44,10 @@ rm -rf $RPM_BUILD_ROOT
 %{python_sitelib}/cover_grabber-%{version}-py*.egg-info
 
 %changelog
-* Wed Dec 8 2011 Jayson Vaughn <vaughn.jayson@gmail.com> 1.0.1-1
+* Fri Dec 9 2011 Jayson Vaughn <vaughn.jayson@gmail.com> 1.1.0-1
+- Added UTF-8 support
+- Added dependency for mutagen in setup.py
+* Thu Dec 8 2011 Jayson Vaughn <vaughn.jayson@gmail.com> 1.0.1-1
 - Updated installation instructions
 * Wed Dec 7 2011 Jayson Vaughn <vaughn.jayson@gmail.com> 1.0.0-1
 - Added FLAC Support
