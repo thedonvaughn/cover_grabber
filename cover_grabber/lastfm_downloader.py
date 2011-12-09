@@ -43,7 +43,7 @@ class LastFMDownloader(object):
         xml_data = ETree.fromstring(response) # Read in XML data
 
         for element in xml_data.getiterator("album"):
-            if (element.find('artist').text.lower() == self.artist_name.lower()):
+            if (element.find('artist').text.lower() == self.artist_name.lower().encode("utf-8")):
                 for sub_element in element.findall('image'):
                     if (sub_element.attrib['size'] == 'extralarge'):
                         url = sub_element.text
