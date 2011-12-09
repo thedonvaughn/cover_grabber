@@ -69,7 +69,7 @@ class MediaDirWalker(object):
                         image_url = downloader.search_for_image() # Search for cover image, return URL to download it
                         # If we found the image URL, then download the image.
                         if image_url:
-                            print('Downloading album cover image for "{artist_name} - {album_name}"'.format(artist_name=artist_name, album_name=album_name))
+                            print(u'Downloading album cover image for "{artist_name} - {album_name}"'.format(artist_name=artist_name, album_name=album_name))
                             self.download_image(dirname, image_url)
 
 
