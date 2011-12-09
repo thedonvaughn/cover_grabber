@@ -41,7 +41,7 @@ class MediaDirWalker(object):
         album_name = ""
         artist_name = ""
         filehandler = None
-
+        
         # If we have files in the directory
         if filenames:
             for file in filenames:
@@ -65,11 +65,23 @@ class MediaDirWalker(object):
 
                     # If ID3 tag exists and we have an album name
                     if album_name:
-                        downloader = LastFMDownloader(album_name, artist_name) # Set downloader type to be LastFM
-                        image_url = downloader.search_for_image() # Search for cover image, return URL to download it
+                        # check if the cover is already there before making api calls
+                        possible_covers = ["cover.png", "cover.jpg", "cover.gif"]
+                        for cover_name in possible_covers:
+                            if os.path.exists(os.path.join(dirname, cover_name)):
+                                print(u'cover image for "{artist_name} - {album_name}" already present, move to next one'.format(artist_name=artist_name, album_name=album_name))
+                                return
+                        try:
+                            downloader = LastFMDownloader(album_name, artist_name) # Set downloader type to be LastFM
+                            image_url = downloader.search_for_image() # Search for cover image, return URL to download it
+                        except KeyboardInterrupt,e:
+                            raise
+                        except Exception,e:
+                            image_url = None
+                            print(u'SOMETHING VERY BAD HAPPENED during processing of "{artist_name} - {album_name}"'.format(artist_name=artist_name, album_name=album_name))
                         # If we found the image URL, then download the image.
                         if image_url:
-                            print('Downloading album cover image for "{artist_name} - {album_name}"'.format(artist_name=artist_name, album_name=album_name))
+                            print(u'Downloading album cover image for "{artist_name} - {album_name}"'.format(artist_name=artist_name, album_name=album_name))
                             self.download_image(dirname, image_url)
 
 
@@ -84,6 +96,8 @@ class MediaDirWalker(object):
             cover_name = "cover.jpg"
         if ".gif" in image_url:
             cover_name = "cover.gif"
+        else:
+            return
 
         # Does cover.(png|jpg) already exist?  
         if os.path.exists(os.path.join(dirname, cover_name)):

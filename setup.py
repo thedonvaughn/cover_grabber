@@ -16,7 +16,7 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 
-from distutils.core import setup
+from setuptools import setup
 
 setup(name='cover_grabber',
       version='1.0.1',
@@ -27,5 +27,6 @@ setup(name='cover_grabber',
       scripts = ['covergrabber'],
       packages = ['cover_grabber'],
       package_dir = {'Cover Grabber':'cover_grabber'},
+      install_requires = ['mutagen'],
       license = "GNU GPL v3"
 )
