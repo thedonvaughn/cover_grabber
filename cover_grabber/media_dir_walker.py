@@ -77,6 +77,7 @@ class MediaDirWalker(object):
                         except KeyboardInterrupt,e:
                             raise
                         except Exception,e:
+                            image_url = None
                             print(u'SOMETHING VERY BAD HAPPENED during processing of "{artist_name} - {album_name}"'.format(artist_name=artist_name, album_name=album_name))
                         # If we found the image URL, then download the image.
                         if image_url:
