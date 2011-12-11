@@ -15,9 +15,10 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from setuptools import setup
+import cover_grabber
 
 setup(name='cover_grabber',
-      version='1.1.0',
+      version=cover_grabber.COVER_GRABBER_VERSION,
       description='Recursively traverse media directory and download album art',
       author='Jayson Vaughn',
       author_email='vaughn.jayson@gmail.com',

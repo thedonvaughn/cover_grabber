@@ -18,18 +18,18 @@
 import os
 import sys
 from optparse import OptionParser
-COVER_GRABBER_VERSION = "1.1.0"
 
 # Add path where CoverGrabber resides to syspath
 basedir = os.path.dirname(os.path.realpath(__file__))
 sys.path.insert(0, basedir)
 
+import cover_grabber
 from cover_grabber.media_dir_walker import MediaDirWalker
 
 def parse_args_opts():
     """parse command line argument options"""
 
-    parser = OptionParser(usage="%prog <media dir> [-o]", version="%prog " + COVER_GRABBER_VERSION)
+    parser = OptionParser(usage="%prog <media dir> [-o]", version="%prog " + cover_grabber.COVER_GRABBER_VERSION)
     parser.add_option("-o", "--overwrite", dest="overwrite", action="store_true", default=False, help="overwrite cover image: True or False (Default: False)")
 
     (options, args) = parser.parse_args()
