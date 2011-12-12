@@ -45,6 +45,10 @@ rm -rf $RPM_BUILD_ROOT
 %{python_sitelib}/cover_grabber-%{version}-py*.egg-info
 
 %changelog
+* Sun Dec 11 2011 Jayson Vaughn <vaughn.jayson@gmail.com> 1.1.1-1
+- Cleaned up versioning
+- Added "jpeg" file support
+- Cleaned up usage
 * Fri Dec 9 2011 Jayson Vaughn <vaughn.jayson@gmail.com> 1.1.0-1
 - Added UTF-8 support
 - Added dependency for mutagen in setup.py
