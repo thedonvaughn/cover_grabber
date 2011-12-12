@@ -12,8 +12,8 @@ BuildArch:  noarch
 URL:        https://sourceforge.net/projects/covergrabber/
 
 BuildRequires: python-devel
-Requires: python-mutagen
-Requires: python-setuptools
+BuildRequires: python-mutagen
+BuildRequires: python-setuptools
 
 %description
 Cover Grabber will recursively traverse a specified directory of media files 
