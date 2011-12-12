@@ -59,11 +59,11 @@ class MediaDirWalker(object):
 
             # If we have a file handler, then continue
             if filehandler:
-                # If the directory actually contains MP3s (or whatever media file extension) then continue
+                # If the directory actually contains media files then continue
                 if filehandler.audio_files:
                     (album_name, artist_name) = filehandler.get_album_and_artist() # Lookup album and artist ID3 tag
 
-                    # If ID3 tag exists and we have an album name
+                    # If metadata/tags exists and we have an album name
                     if album_name:
                         # check if the cover is already there before making api calls
                         possible_covers = ["cover.png", "cover.jpg", "cover.gif"]
@@ -94,12 +94,14 @@ class MediaDirWalker(object):
             cover_name = "cover.png"
         if ".jpg" in image_url:
             cover_name = "cover.jpg"
+        if ".jpeg" in image_url:
+            cover_name = "cover.jpeg"
         if ".gif" in image_url:
             cover_name = "cover.gif"
         else:
             return
 
-        # Does cover.(png|jpg) already exist?  
+        # Does cover.(png|jpg|jpeg|gif) already exist?  
         if os.path.exists(os.path.join(dirname, cover_name)):
             # If overwrite is set to True, then go ahead and re-download album cover
             if self.overwrite:
@@ -111,7 +113,7 @@ class MediaDirWalker(object):
             self.do_download(dirname, image_url, cover_name)
 
     def do_download(self, dirname, image_url, cover_name):
-        """ Download album cover art and save as cover.(png|jpg)"""
+        """ Download album cover art and save as cover.(png|jpg|jpeg|gif)"""
 
         image_data = urllib.urlopen(image_url).read()
         f = open(os.path.join(dirname, cover_name), 'w')

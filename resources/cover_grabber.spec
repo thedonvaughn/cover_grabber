@@ -2,9 +2,9 @@
 
 Summary:    Download album cover art
 Name:       cover_grabber
-Version:    1.1.0
+Version:    1.1.1
 Release:    1%{?dist}
-Source0:    http://69.164.204.114/cover_grabber-1.1.0.tar.gz
+Source0:    http://69.164.204.114/cover_grabber-1.1.1.tar.gz
 License:    GPLv3+
 Group:      Applications/Multimedia
 BuildRoot:  %{_tmppath}/%{name}-%{version}-%{release}-buildroot
@@ -13,6 +13,7 @@ URL:        https://sourceforge.net/projects/covergrabber/
 
 BuildRequires: python-devel
 Requires: python-mutagen
+Requires: python-setuptools
 
 %description
 Cover Grabber will recursively traverse a specified directory of media files 

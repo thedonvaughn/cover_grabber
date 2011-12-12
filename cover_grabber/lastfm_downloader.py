@@ -44,9 +44,9 @@ class LastFMDownloader(object):
 
         for element in xml_data.getiterator("album"):
             if (element.find('artist').text.lower() == self.artist_name.lower().encode("utf-8")):
-                for sub_element in element.findall('image'):
-                    if (sub_element.attrib['size'] == 'extralarge'):
-                        url = sub_element.text
+                for elmnt in element.findall('image'):
+                    if (elmnt.attrib['size'] == 'extralarge'):
+                        url = elmnt.text
                         if url:
                             return url
                         else:
