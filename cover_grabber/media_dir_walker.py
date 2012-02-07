@@ -92,11 +92,11 @@ class MediaDirWalker(object):
         # Set name of image file based on extension from image URL
         if ".png" in image_url:
             cover_name = "cover.png"
-        if ".jpg" in image_url:
+        elif ".jpg" in image_url:
             cover_name = "cover.jpg"
-        if ".jpeg" in image_url:
+        elif ".jpeg" in image_url:
             cover_name = "cover.jpeg"
-        if ".gif" in image_url:
+        elif ".gif" in image_url:
             cover_name = "cover.gif"
         else:
             return
