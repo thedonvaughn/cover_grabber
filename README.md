@@ -30,7 +30,7 @@ https://github.com/thedonvaughn/cover_grabber
 
  2.) Install covergrabber:
 
-    $ python setup.py install
+$ python setup.py install
 
 ## Howto Use
 
