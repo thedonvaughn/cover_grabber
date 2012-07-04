@@ -22,15 +22,15 @@ https://github.com/thedonvaughn/cover_grabber
 
 ## Install
 
- 1.) Install python-mutagen
+1). Install python-mutagen
 
 * Debian/Ubuntu: apt-get install python-mutagen
 * Fedora: yum install python-mutagen
 * Arch: pacman -Sy mutagen
 
- 2.) Install covergrabber:
+2). Install covergrabber:
 
-$ python setup.py install
+    $ python setup.py install
 
 ## Howto Use
 
