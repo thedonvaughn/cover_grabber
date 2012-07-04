@@ -20,7 +20,6 @@ from ogg_handler import OGGHandler
 from flac_handler import FLACHandler
 from lastfm_downloader import LastFMDownloader
 
-
 class MediaDirWalker(object):
     def __init__(self, path, overwrite = False):
         """ Initialize Media directory walker object"""
@@ -31,7 +30,7 @@ class MediaDirWalker(object):
     def do_walk_path(self):
         """ Walk specified directory recursively.  Call self.process_dir() on each directory """
 
-        print("Scanning: {path}".format(path=self.path))
+        print(u'Scanning: {path}'.format(path=self.path))
         os.path.walk(self.path, self.process_dir, None)
 
     def process_dir(self, args, dirname, filenames):
@@ -66,7 +65,7 @@ class MediaDirWalker(object):
                     # If metadata/tags exists and we have an album name
                     if album_name:
                         # check if the cover is already there before making api calls
-                        possible_covers = ["cover.png", "cover.jpg", "cover.gif"]
+                        possible_covers = ["cover.png", "cover.jpg", "cover.gif", "cover.tiff", "cover.svg"]
                         for cover_name in possible_covers:
                             if os.path.exists(os.path.join(dirname, cover_name)):
                                 print(u'cover image for "{artist_name} - {album_name}" already present, move to next one'.format(artist_name=artist_name, album_name=album_name))
@@ -90,30 +89,36 @@ class MediaDirWalker(object):
         Call method to download album cover art image to specified directory"""
 
         # Set name of image file based on extension from image URL
-        if ".png" in image_url:
+        if ".png" in image_url.lower():
             cover_name = "cover.png"
-        elif ".jpg" in image_url:
+        elif ".jpg" in image_url.lower():
             cover_name = "cover.jpg"
-        elif ".jpeg" in image_url:
-            cover_name = "cover.jpeg"
-        elif ".gif" in image_url:
+        elif ".jpeg" in image_url.lower():
+            cover_name = "cover.jpg"
+        elif ".gif" in image_url.lower():
             cover_name = "cover.gif"
+        elif ".tif" in image_url.lower():
+            cover_name = "cover.tiff"
+        elif ".tiff" in image_url.lower():
+            cover_name = "cover.tiff"
+        elif ".svg" in image_url.lower():
+            cover_name = "cover.svg"
         else:
             return
 
-        # Does cover.(png|jpg|jpeg|gif) already exist?  
+        # Does cover.(png|jpg|gif|tiff|svg) already exist?  
         if os.path.exists(os.path.join(dirname, cover_name)):
             # If overwrite is set to True, then go ahead and re-download album cover
             if self.overwrite:
                 self.do_download(dirname, image_url, cover_name)
             else:
-                print("!! Cover already exists in {0}".format(dirname))
+                print(u'!! Cover already exists in {0}'.format(dirname))
         else:
             # If cover doesn't exist, go ahead and download
             self.do_download(dirname, image_url, cover_name)
 
     def do_download(self, dirname, image_url, cover_name):
-        """ Download album cover art and save as cover.(png|jpg|jpeg|gif)"""
+        """ Download album cover art and save as cover.(png|jpg|gif|tiff|svg)"""
 
         image_data = urllib.urlopen(image_url).read()
         f = open(os.path.join(dirname, cover_name), 'w')

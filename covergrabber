@@ -43,7 +43,7 @@ def parse_args_opts():
     if os.path.isdir(sys.argv[1]):
         media_dir = sys.argv[1]
     else:
-        print("{0} is not a directory".format(sys.argv[1]))
+        print(u'{0} is not a directory'.format(sys.argv[1]))
         parser.print_help()
         sys.exit(2)
 
