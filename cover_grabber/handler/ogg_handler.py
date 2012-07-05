@@ -17,6 +17,7 @@ import os
 import mutagen
 from mutagen.oggvorbis import OggVorbis
 from cover_grabber.handler.handler import Handler
+from cover_grabber.logging.config import logger
 
 class OGGHandler(Handler):
     def __init__(self, dirname, filenames):
@@ -36,8 +37,10 @@ class OGGHandler(Handler):
                 tags = OggVorbis(file)
                 if tags:
                     if "album" in tags.keys() and "artist" in tags.keys():
+                        logger.debug(u'album -> {album}, artist -> {artist}'.format(album=tags["album"][0], artist=tags["artist"][0]))
                         return (tags["album"][0], tags["artist"][0])
                         break # If we found ID3 tag info from a file, no reason to query the rest in a directory.  
             except mutagen.oggvorbis.OggVorbisHeaderError:
+                logger.error(u'No OggVorbis Header data found')
                 continue
         return (None, None)

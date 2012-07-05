@@ -17,6 +17,7 @@ import os
 import mutagen
 from mutagen.easyid3 import EasyID3
 from cover_grabber.handler.handler import Handler
+from cover_grabber.logging.config import logger
 
 class MP3Handler(Handler):
     def __init__(self, dirname, filenames):
@@ -35,8 +36,10 @@ class MP3Handler(Handler):
                 tags = EasyID3(file)
                 if tags:
                     if "album" in tags.keys() and "artist" in tags.keys():
+                        logger.debug(u'album -> {album}, artist -> {artist}'.format(album=tags["album"][0], artist=tags["artist"][0]))
                         return (tags["album"][0], tags["artist"][0])
                         break # If we found ID3 tag info from a file, no reason to query the rest in a directory.  
             except mutagen.id3.ID3NoHeaderError:
+                logger.error(u'No ID3 Header data')
                 continue
         return (None, None)

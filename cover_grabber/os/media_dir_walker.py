@@ -17,6 +17,7 @@ import os
 import urllib
 from cover_grabber.handler.handler_factory import HandlerFactory
 from cover_grabber.downloader.lastfm_downloader import LastFMDownloader
+from cover_grabber.logging.config import logger
 
 class MediaDirWalker(object):
     def __init__(self, path, overwrite = False):
@@ -28,7 +29,7 @@ class MediaDirWalker(object):
     def do_walk_path(self):
         """ Walk specified directory recursively.  Call self.process_dir() on each directory """
 
-        print(u'Scanning: {path}'.format(path=self.path))
+        logger.info(u'Scanning {path}'.format(path=self.path))
         os.path.walk(self.path, self.process_dir, None)
 
     def process_dir(self, args, dirname, filenames):
@@ -55,12 +56,12 @@ class MediaDirWalker(object):
                         if cover_exists == False:
                             image_url = self.get_image_url(album_name, artist_name)
                         else:
-                            print(u'cover image for "{artist_name} - {album_name}" already present, moving on to the next one'.format(artist_name=artist_name, album_name=album_name))
+                            logger.warning(u'cover image for "{artist_name} - {album_name}" already exists, moving on to the next one'.format(artist_name=artist_name, album_name=album_name))
                             image_url = None
 
                         # If we found the image URL, then download the image.
                         if image_url:
-                            print(u'Downloading album cover image for "{artist_name} - {album_name}"'.format(artist_name=artist_name, album_name=album_name))
+                            logger.info(u'Downloading album cover image for "{artist_name} - {album_name}"'.format(artist_name=artist_name, album_name=album_name))
                             self.download_image(dirname, image_url)
 
     def check_cover_image_existence(self, dirname):
@@ -80,7 +81,7 @@ class MediaDirWalker(object):
         except KeyboardInterrupt,e:
             raise
         except Exception,e:
-            print(u'SOMETHING VERY BAD HAPPENED during processing of "{artist_name} - {album_name}"'.format(artist_name=artist_name, album_name=album_name))
+            logger.error(u'SOMETHING VERY BAD HAPPENED during processing of "{artist_name} - {album_name}"'.format(artist_name=artist_name, album_name=album_name))
         return image_url
 
     def download_image(self, dirname, image_url):
@@ -111,7 +112,7 @@ class MediaDirWalker(object):
             if self.overwrite:
                 self.do_download(dirname, image_url, cover_name)
             else:
-                print(u'!! Cover already exists in {0}'.format(dirname))
+                logger.warning(u'Cover ({covername}) already exists in {dir_name}'.format(covername=cover_name, dir_name = dirname))
         else:
             # If cover doesn't exist, go ahead and download
             self.do_download(dirname, image_url, cover_name)

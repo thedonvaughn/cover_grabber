@@ -17,6 +17,7 @@
 
 import os
 import sys
+import logging
 from optparse import OptionParser
 
 # Add path where CoverGrabber resides to syspath
@@ -25,6 +26,8 @@ sys.path.insert(0, basedir)
 
 import cover_grabber
 from cover_grabber.os.media_dir_walker import MediaDirWalker
+from cover_grabber.logging.config import logger
+
 
 def parse_args_opts():
     """parse command line argument options"""
@@ -43,7 +46,7 @@ def parse_args_opts():
     if os.path.isdir(sys.argv[1]):
         media_dir = sys.argv[1]
     else:
-        print(u'{0} is not a directory'.format(sys.argv[1]))
+        logger.error(u'{0} is not a directory'.format(sys.argv[1]))
         parser.print_help()
         sys.exit(2)
 
@@ -55,9 +58,9 @@ def main():
         opts = parse_args_opts()
         media_walker = MediaDirWalker(opts["media_dir"], opts["overwrite"]).do_walk_path()
     except KeyboardInterrupt:
-        print u'Shutdown requesting.... exiting'
+        logger.error(u'Shutdown requested... exiting')
     except Exception:
-        print u'Exception: Shutting down'
+        logger.error(u'Exception caught... Shutting down')
         traceback.print_exc(file=stdout)
     sys.exit(0)
  
