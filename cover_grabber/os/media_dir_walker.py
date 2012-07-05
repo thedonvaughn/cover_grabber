@@ -64,6 +64,7 @@ class MediaDirWalker(object):
                             self.download_image(dirname, image_url)
 
     def check_cover_image_existence(self, dirname):
+        """ Check if cover image already exists in the specified directory """
         possible_covers = ["cover.png", "cover.jpg", "cover.gif", "cover.tiff", "cover.svg"]
         for cover_name in possible_covers:
             if os.path.exists(os.path.join(dirname, cover_name)):
@@ -71,6 +72,7 @@ class MediaDirWalker(object):
         return False  
 
     def get_image_url(self, album_name, artist_name):
+        """ Retrieve URL for cover image """
         image_url = None
         try:
             downloader = LastFMDownloader(album_name, artist_name) # Set downloader type to be LastFM

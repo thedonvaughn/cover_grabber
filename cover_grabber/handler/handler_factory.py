@@ -30,6 +30,6 @@ class HandlerFactory(object):
                 return OGGHandler(dirname, filenames) # Set the File Handler to be OGG
 
             if ".flac" in file:
-                return FLACHandler(dirname, filenames) # Set the File Handler to be OGG
+                return FLACHandler(dirname, filenames) # Set the File Handler to be FLAC
 
         return False
