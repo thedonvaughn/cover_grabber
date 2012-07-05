@@ -19,6 +19,8 @@ try:
 except:
     import xml.etree.ElementTree as ETree
 
+from cover_grabber.logging.config import logger
+
 
 class LastFMDownloader(object):
     def __init__(self, album_name, artist_name):
@@ -38,7 +40,7 @@ class LastFMDownloader(object):
     def search_for_image(self):
         """ Use LastFM's API to obtain a URL for the album cover art """
         
-        print(u'LastFM: Searching for "{artist_name} - {album_name}"'.format(artist_name=self.artist_name, album_name=self.album_name))
+        logger.info(u'LastFM: Searching for "{artist_name} - {album_name}"'.format(artist_name=self.artist_name, album_name=self.album_name))
         response = urllib.urlopen(self.url).read() # Send HTTP request to LastFM
         xml_data = ETree.fromstring(response) # Read in XML data
 
