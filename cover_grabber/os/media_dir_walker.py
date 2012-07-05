@@ -15,10 +15,8 @@
 
 import os
 import urllib
-from mp3_handler import MP3Handler
-from ogg_handler import OGGHandler
-from flac_handler import FLACHandler
-from lastfm_downloader import LastFMDownloader
+from cover_grabber.handler.handler_factory import HandlerFactory
+from cover_grabber.downloader.lastfm_downloader import LastFMDownloader
 
 class MediaDirWalker(object):
     def __init__(self, path, overwrite = False):
@@ -35,7 +33,7 @@ class MediaDirWalker(object):
 
     def process_dir(self, args, dirname, filenames):
         """ callback for each directory encourted by os.path.walk.
-            If directory contains mp3, search and download it's cover art"""
+            If directory contains audio files, attempt to extract it's metatags, then search and download it's cover art"""
         
         album_name = ""
         artist_name = ""
@@ -43,18 +41,7 @@ class MediaDirWalker(object):
         
         # If we have files in the directory
         if filenames:
-            for file in filenames:
-                if ".mp3" in file:
-                    filehandler = MP3Handler(dirname, filenames) # Set the File Handler to be MP3
-                    break
-
-                if ".ogg" in file:
-                    filehandler = OGGHandler(dirname, filenames) # Set the File Handler to be OGG
-                    break
-                    
-                if ".flac" in file:
-                    filehandler = FLACHandler(dirname, filenames) # Set the File Handler to be OGG
-                    break
+            filehandler = HandlerFactory.get_handler(dirname, filenames) # get proper Handler class based on extension of files
 
             # If we have a file handler, then continue
             if filehandler:
@@ -64,25 +51,35 @@ class MediaDirWalker(object):
 
                     # If metadata/tags exists and we have an album name
                     if album_name:
-                        # check if the cover is already there before making api calls
-                        possible_covers = ["cover.png", "cover.jpg", "cover.gif", "cover.tiff", "cover.svg"]
-                        for cover_name in possible_covers:
-                            if os.path.exists(os.path.join(dirname, cover_name)):
-                                print(u'cover image for "{artist_name} - {album_name}" already present, move to next one'.format(artist_name=artist_name, album_name=album_name))
-                                return
-                        try:
-                            downloader = LastFMDownloader(album_name, artist_name) # Set downloader type to be LastFM
-                            image_url = downloader.search_for_image() # Search for cover image, return URL to download it
-                        except KeyboardInterrupt,e:
-                            raise
-                        except Exception,e:
+                        cover_exists = self.check_cover_image_existence(dirname) # Does cover image already exist in the current directory?
+                        if cover_exists == False:
+                            image_url = self.get_image_url(album_name, artist_name)
+                        else:
+                            print(u'cover image for "{artist_name} - {album_name}" already present, moving on to the next one'.format(artist_name=artist_name, album_name=album_name))
                             image_url = None
-                            print(u'SOMETHING VERY BAD HAPPENED during processing of "{artist_name} - {album_name}"'.format(artist_name=artist_name, album_name=album_name))
+
                         # If we found the image URL, then download the image.
                         if image_url:
                             print(u'Downloading album cover image for "{artist_name} - {album_name}"'.format(artist_name=artist_name, album_name=album_name))
                             self.download_image(dirname, image_url)
 
+    def check_cover_image_existence(self, dirname):
+        possible_covers = ["cover.png", "cover.jpg", "cover.gif", "cover.tiff", "cover.svg"]
+        for cover_name in possible_covers:
+            if os.path.exists(os.path.join(dirname, cover_name)):
+                return True
+        return False  
+
+    def get_image_url(self, album_name, artist_name):
+        image_url = None
+        try:
+            downloader = LastFMDownloader(album_name, artist_name) # Set downloader type to be LastFM
+            image_url = downloader.search_for_image() # Search for cover image, return URL to download it
+        except KeyboardInterrupt,e:
+            raise
+        except Exception,e:
+            print(u'SOMETHING VERY BAD HAPPENED during processing of "{artist_name} - {album_name}"'.format(artist_name=artist_name, album_name=album_name))
+        return image_url
 
     def download_image(self, dirname, image_url):
         """ Check if overwrite is enabled.  Check if album cover already exists

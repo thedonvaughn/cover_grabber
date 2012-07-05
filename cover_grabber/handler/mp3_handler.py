@@ -16,13 +16,12 @@
 import os
 import mutagen
 from mutagen.easyid3 import EasyID3
+from cover_grabber.handler.handler import Handler
 
-class MP3Handler(object):
+class MP3Handler(Handler):
     def __init__(self, dirname, filenames):
         """ Initialize MP3 Handler """
-
-        self.dirname = dirname #Name of directory
-        self.filenames = filenames #List of filenames found in directory
+        super(MP3Handler, self).__init__(dirname, filenames)
         # Create audio_files list from the filenames list by filtering for only mp3s
         self.audio_files = [os.path.join(dirname, file) for file in filenames if ".mp3" in file]
 

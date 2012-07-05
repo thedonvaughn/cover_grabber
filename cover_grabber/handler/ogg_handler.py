@@ -15,29 +15,29 @@
 
 import os
 import mutagen
-from mutagen.flac import FLAC
+from mutagen.oggvorbis import OggVorbis
+from cover_grabber.handler.handler import Handler
 
-class FLACHandler(object):
+class OGGHandler(Handler):
     def __init__(self, dirname, filenames):
-        """ Initialize FLAC Handler """
+        """ Initialize OGGHandler """
+        super(FLACHandler, self).__init__(dirname, filenames)
 
-        self.dirname = dirname #Name of directory
-        self.filenames = filenames #List of filenames found in directory
-        # Create audio_files list from the filenames list by filtering for only flac
-        self.audio_files = [os.path.join(dirname, file) for file in filenames if ".flac" in file]
+        # Create audio_files list from the filenames list by filtering for only ogg files 
+        self.audio_files = [os.path.join(dirname, file) for file in filenames if ".ogg" in file]
 
     def get_album_and_artist(self):
-        """ Return FLAC tags for album and artist"""
+        """ Return Ogg tags for album and artist"""
 
         self.audio_files.sort()
 
         for file in self.audio_files:
             try:
-                tags = FLAC(file)
+                tags = OggVorbis(file)
                 if tags:
                     if "album" in tags.keys() and "artist" in tags.keys():
                         return (tags["album"][0], tags["artist"][0])
                         break # If we found ID3 tag info from a file, no reason to query the rest in a directory.  
-            except mutagen.flac.FLACNoHeaderError:
+            except mutagen.oggvorbis.OggVorbisHeaderError:
                 continue
         return (None, None)
