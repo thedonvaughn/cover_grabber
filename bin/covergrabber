@@ -1,0 +1,65 @@
+#!/usr/bin/env python
+# Copyright (C) 2011 Jayson Vaughn <vaughn.jayson@gmail.com>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+
+import os
+import sys
+from optparse import OptionParser
+
+# Add path where CoverGrabber resides to syspath
+basedir = os.path.dirname(os.path.realpath(__file__))
+sys.path.insert(0, basedir)
+
+import cover_grabber
+from cover_grabber.os.media_dir_walker import MediaDirWalker
+
+def parse_args_opts():
+    """parse command line argument options"""
+
+    parser = OptionParser(usage="%prog <media dir> [-o]", version="%prog " + cover_grabber.COVER_GRABBER_VERSION)
+    parser.add_option("-o", "--overwrite", dest="overwrite", action="store_true", default=False, help="overwrite cover image: True or False (Default: False)")
+
+    (options, args) = parser.parse_args()
+
+    # Make sure media directory was given as argument
+    if len(sys.argv) < 2:
+        parser.print_help()
+        sys.exit(2)
+
+    # Ensure argument given is actually a directory
+    if os.path.isdir(sys.argv[1]):
+        media_dir = sys.argv[1]
+    else:
+        print(u'{0} is not a directory'.format(sys.argv[1]))
+        parser.print_help()
+        sys.exit(2)
+
+    return ({"media_dir": media_dir, "overwrite": options.overwrite})
+
+def main():
+    """recursively iterate through directory and download album cover art for media files"""
+    try:
+        opts = parse_args_opts()
+        media_walker = MediaDirWalker(opts["media_dir"], opts["overwrite"]).do_walk_path()
+    except KeyboardInterrupt:
+        print u'Shutdown requesting.... exiting'
+    except Exception:
+        print u'Exception: Shutting down'
+        traceback.print_exc(file=stdout)
+    sys.exit(0)
+ 
+if __name__ == "__main__":
+    main()
