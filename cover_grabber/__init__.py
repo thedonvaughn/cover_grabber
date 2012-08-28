@@ -13,6 +13,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-__version__ = (1,2,0)
+__version__ = (1,2,1)
 __version_string__ = '.'.join(map(str, __version__))
 COVER_GRABBER_VERSION = __version_string__
