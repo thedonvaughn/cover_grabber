@@ -22,7 +22,7 @@ from cover_grabber.logging.config import logger
 class OGGHandler(Handler):
     def __init__(self, dirname, filenames):
         """ Initialize OGGHandler """
-        super(FLACHandler, self).__init__(dirname, filenames)
+        super(OGGHandler, self).__init__(dirname, filenames)
 
         # Create audio_files list from the filenames list by filtering for only ogg files 
         self.audio_files = [os.path.join(dirname, file) for file in filenames if ".ogg" in file]
