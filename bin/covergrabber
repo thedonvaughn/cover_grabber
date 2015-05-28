@@ -24,6 +24,7 @@ from optparse import OptionParser
 basedir = os.path.dirname(os.path.realpath(__file__))
 sys.path.insert(0, basedir)
 
+import traceback
 import cover_grabber
 from cover_grabber.os.media_dir_walker import MediaDirWalker
 from cover_grabber.logging.config import logger
